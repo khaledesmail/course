@@ -1,0 +1,16 @@
+{
+   "REQUEST_HEADER_SCHEMA": {
+      "title": "request headers",
+      "description": "request headers schema",
+      "type": "object",
+      "additionalProperties": true,
+      "required": [
+         "correlationid"
+      ],
+      "properties": {
+         "correlationid": {
+            "type": "string"
+         }
+      }
+   }
+}

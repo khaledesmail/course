@@ -1,0 +1,161 @@
+swagger: "2.0"
+info:
+  description: "Valeo Services."
+  version: "1.0.0"
+  title: "Course APIs"
+host: "localhost:3000"
+basePath: "/rest/api/v1/course"
+schemes:
+- "http"
+securityDefinitions:
+  Bearer:
+    type: apiKey
+    name: Authorization
+    in: header
+paths:
+  "/":
+    post:
+      security:
+        - Bearer: []
+      tags:
+      - "Course"
+      summary: "Publish course result"
+      description: "This api to publish a course results."
+      operationId: "createCourseResult"
+      produces:
+      - "application/json"
+      consumes:
+         - multipart/form-data
+      parameters:
+      - in: header
+        name: correlationID
+        type: "string"
+        format: uuid
+        required: true
+      - in: formData
+        name: course
+        type: file
+        description: The file to upload.
+      - in: formData
+        name: email
+        type: string
+        description: Send an email notification .
+      responses:
+        '200':
+          description: successful operation
+          schema:
+              $ref: '#/definitions/courseResponse'
+        '400':
+          description: Bad request.
+          schema:
+              $ref: '#/definitions/Error'
+        '401':
+          description: Authorization information is missing or invalid.
+          schema:
+              $ref: '#/definitions/Error'
+        '404':
+         description: Data was not found.
+         schema:
+              $ref: '#/definitions/Error'
+        '422':
+         description: Unprocessable entity.
+         schema:
+              $ref: '#/definitions/Error'
+    get:
+      tags:
+      - "Course"
+      summary: "Get Publish course result"
+      description: "This api to get publish a course results."
+      operationId: "getCourseResult"
+      produces:
+      - "application/json"
+      parameters:
+      - in: header
+        name: correlationID
+        type: "string"
+        format: uuid
+        required: true
+      - in: query
+        name: studentId
+        type: "string"
+        format: uuid
+      - in: query
+        name: courseId
+        type: "string"
+      responses:
+        '200':
+          description: successful operation
+          schema:
+              $ref: '#/definitions/getcourseResponse'
+        '400':
+          description: Bad request.
+          schema:
+              $ref: '#/definitions/Error'
+        '401':
+          description: Authorization information is missing or invalid.
+          schema:
+              $ref: '#/definitions/Error'
+        '404':
+         description: Data was not found.
+         schema:
+              $ref: '#/definitions/Error'
+        '422':
+         description: Unprocessable entity.
+         schema:
+              $ref: '#/definitions/Error'
+definitions:
+  courseResponse:
+    type: "object"
+    properties:
+      success:
+       type: "boolean"
+      message:
+       type: "string"
+       example: "Grades upload was successful"
+      data:
+       type: "object"
+  getcourseResponse:
+    type: "object"
+    properties:
+      success:
+       type: "boolean"
+      message:
+       type: "string"
+       example: "Data has been retrieved successfully"
+      data:
+        type: array
+        items:
+         type: object
+         properties:
+          _id:
+           type: string
+           format: uuid
+          studentId:
+           type: string
+           format: uuid
+          courseId:
+           type: string
+          grade:
+           type: integer
+          status:
+           type: string
+          teacherName:
+           type: string
+          createdAt:
+           type: string
+           format: date-time
+          updatedAt:
+           type: string
+           format: date-time
+
+  Error:
+    type: "object"
+    properties:
+      success:
+       type: "boolean"
+       example: false
+      message:
+       type: "string"
+       example: ""
+      data:
+       type: "object"
