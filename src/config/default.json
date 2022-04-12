@@ -19,11 +19,11 @@
     }
   },
   "jwt": {
-    "SECRET": "valeoService",
+    "SECRET": "12345",
     "SALT": 10
   },
   "gmail": {
     "user": "khaled.esmail.ibm@gmail.com",
-    "pass": "ValeoService123"
+    "pass": "12345"
   }
 }
